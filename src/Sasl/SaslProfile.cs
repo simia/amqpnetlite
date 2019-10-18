@@ -31,6 +31,7 @@ namespace Amqp.Sasl
         internal const string ExternalName = "EXTERNAL";
         internal const string AnonymousName = "ANONYMOUS";
         internal const string PlainName = "PLAIN";
+        internal const string GsspiName = "GSSAPI";
 
         /// <summary>
         /// Initializes a SaslProfile object.
@@ -55,6 +56,14 @@ namespace Amqp.Sasl
         public static SaslProfile External
         {
             get { return new SaslNoActionProfile(ExternalName, string.Empty); }
+        }
+
+        /// <summary>
+        /// Gets a SASL EXTERNAL profile.
+        /// </summary>
+        public static SaslProfile GSSPI
+        {
+            get { return new SaslGsspiProfile(GsspiName, string.Empty); }
         }
 
         /// <summary>
