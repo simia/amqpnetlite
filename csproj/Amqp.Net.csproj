@@ -323,6 +323,9 @@
     <Compile Include="..\src\Sasl\SaslCode.cs">
       <Link>Sasl\SaslCode.cs</Link>
     </Compile>
+    <Compile Include="..\src\Sasl\SaslGsspiProfile.cs">
+      <Link>Sasl\SaslGsspiProfile.cs</Link>
+    </Compile>
     <Compile Include="..\src\Sasl\SaslInit.cs">
       <Link>Sasl\SaslInit.cs</Link>
     </Compile>
@@ -472,10 +475,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="NSspi, Version=0.3.1.0, Culture=neutral, PublicKeyToken=64e28338c9f5eedb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSspi.0.3.1\lib\net40\NSspi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Transactions" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

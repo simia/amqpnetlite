@@ -27,7 +27,7 @@ namespace Amqp.Sasl
     /// </summary>
     public abstract class SaslProfile
     {
-        internal const uint MaxFrameSize = 512;
+        internal const uint MaxFrameSize = 512*3;
         internal const string ExternalName = "EXTERNAL";
         internal const string AnonymousName = "ANONYMOUS";
         internal const string PlainName = "PLAIN";

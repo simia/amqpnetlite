@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Amqp.Framing;
 using Amqp.Types;
+using NSspi;
 using NSspi.Contexts;
 using NSspi.Credentials;
 
@@ -90,12 +91,30 @@ namespace Amqp.Sasl
         //    ref TimeStamp expiry
         //);
         ClientCurrentCredential clientCred = null;
-
         ClientContext client = null;
+        byte[] clientToken;
+        byte[] serverToken;
+        SecurityStatus clientStatus;
 
         public SaslGsspiProfile(string name, string empty)
             : base(name)
         {
+            clientCred = new ClientCurrentCredential(PackageNames.Kerberos);
+            client = new ClientContext(
+                    clientCred,
+                    "POWELASA\\toka",//serverCred.PrincipleName, 
+                    ContextAttrib.MutualAuth |
+                    //ContextAttrib.InitIdentify |
+                    //ContextAttrib.Confidentiality |
+                    //ContextAttrib.ReplayDetect |
+                    ContextAttrib.SequenceDetect |
+                    //ContextAttrib.Connection |
+                    ContextAttrib.Delegate
+                );
+            //client.Dispose();
+            //clientCred.Dispose();
+            clientToken = null;
+            //clientStatus = client.Init(serverToken, out clientToken);
             //this.empty= empty;
         }
 
@@ -110,25 +129,31 @@ namespace Amqp.Sasl
             return init;
         }
 
-
+         
         protected override DescribedList OnCommand(DescribedList command)
         {
             Trace.WriteLine(TraceLevel.Frame, "On Command: {0}", command);
             if (command.Descriptor.Code == Codec.SaslChallenge.Code)
             {
+                //Trace.WriteLine(TraceLevel.Frame, "Challange: {0}", "bsdfsdf");
                 SaslChallenge c = (SaslChallenge)command;//new SaslChallenge { Challenge = command };
-                return new SaslOutcome() { Code = SaslCode.Ok };
+                clientStatus = client.Init(c.Challenge.Length == 0 ? null : c.Challenge, out clientToken);
+                //Trace.WriteLine(TraceLevel.Frame, "Challange: {0}", clientToken);
+
+                return new SaslResponse() { Response = clientToken };//SaslOutcome() { Code = SaslCode.Ok };
+                //return new SaslChallenge() { Challenge = clientToken };
                 //return c;
                 //Trace.WriteLine(TraceLevel.Frame, "Challenge: {0}", c);
 
             }
+
             return null;
             //throw new NotImplementedException();
         }
 
         protected override ITransport UpgradeTransport(ITransport transport)
         {
-            return null;
+            return transport;
             //throw new NotImplementedException();
         }
     }
