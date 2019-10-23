@@ -9,34 +9,30 @@ using NSspi.Credentials;
 
 namespace Amqp.Sasl
 {
-    sealed class SaslGsspiProfile : SaslProfile
+    sealed class SaslGssapiProfile : SaslProfile
     {
         ClientCurrentCredential clientCred = null;
         ClientContext client = null;
         byte[] clientToken;
-        //byte[] serverToken;
+
         SecurityStatus clientStatus;
 
-        public SaslGsspiProfile(string name, string empty)
+        public SaslGssapiProfile(string name, string principal)
             : base(name)
         {
             clientCred = new ClientCurrentCredential(PackageNames.Kerberos);
             client = new ClientContext(
                     clientCred,
-                    "POWELASA\\toka",//serverCred.PrincipleName, 
+                    principal,
                     ContextAttrib.MutualAuth |
                     //ContextAttrib.InitIdentify |
                     //ContextAttrib.Confidentiality |
                     //ContextAttrib.ReplayDetect |
-                    ContextAttrib.SequenceDetect |
+                    //ContextAttrib.SequenceDetect |
                     //ContextAttrib.Connection |
                     ContextAttrib.Delegate
                 );
-            //client.Dispose();
-            //clientCred.Dispose();
             clientToken = null;
-            //clientStatus = client.Init(serverToken, out clientToken);
-            //this.empty= empty;
         }
 
         protected override DescribedList GetStartCommand(string hostname)
@@ -44,7 +40,6 @@ namespace Amqp.Sasl
             SaslInit init = new SaslInit()
             {
                 Mechanism = this.Mechanism,
-                //InitialResponse = message,
                 HostName = hostname
             };
             return init;
@@ -56,10 +51,15 @@ namespace Amqp.Sasl
             Trace.WriteLine(TraceLevel.Frame, "On Command: {0}", command);
             if (command.Descriptor.Code == Codec.SaslChallenge.Code)
             {
-                //Trace.WriteLine(TraceLevel.Frame, "Challange: {0}", "bsdfsdf");
                 SaslChallenge c = (SaslChallenge)command;
-                clientStatus = client.Init(c.Challenge.Length == 0 ? null : c.Challenge, out clientToken);                
-
+                try
+                {
+                    clientStatus = client.Init(c.Challenge.Length == 0 ? null : c.Challenge, out clientToken);
+                }
+                catch
+                {
+                    return new SaslOutcome() { Code = SaslCode.Auth }; 
+                }
                 return new SaslResponse() { Response = clientToken };
             }
 

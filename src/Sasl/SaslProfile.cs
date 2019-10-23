@@ -59,11 +59,11 @@ namespace Amqp.Sasl
         }
 
         /// <summary>
-        /// Gets a SASL EXTERNAL profile.
+        /// Gets a SASL GSSPI profile.
         /// </summary>
-        public static SaslProfile GSSPI
+        public static SaslProfile GSSPI(string principal)
         {
-            get { return new SaslGsspiProfile(GsspiName, string.Empty); }
+            return new SaslGssapiProfile(GsspiName, principal);
         }
 
         /// <summary>

@@ -323,8 +323,8 @@
     <Compile Include="..\src\Sasl\SaslCode.cs">
       <Link>Sasl\SaslCode.cs</Link>
     </Compile>
-    <Compile Include="..\src\Sasl\SaslGsspiProfile.cs">
-      <Link>Sasl\SaslGsspiProfile.cs</Link>
+    <Compile Include="..\src\Sasl\SaslGssapiProfile.cs">
+      <Link>Sasl\SaslGssapiProfile.cs</Link>
     </Compile>
     <Compile Include="..\src\Sasl\SaslInit.cs">
       <Link>Sasl\SaslInit.cs</Link>
