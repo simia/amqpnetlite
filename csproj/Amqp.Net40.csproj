@@ -319,6 +319,9 @@
     <Compile Include="..\src\Sasl\SaslCode.cs">
       <Link>Sasl\SaslCode.cs</Link>
     </Compile>
+    <Compile Include="..\src\Sasl\SaslGssapiProfile.cs">
+      <Link>Sasl\SaslGssapiProfile.cs</Link>
+    </Compile>
     <Compile Include="..\src\Sasl\SaslInit.cs">
       <Link>Sasl\SaslInit.cs</Link>
     </Compile>
@@ -471,6 +474,9 @@
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>$(NUGET_PACKAGES)\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="NSspi, Version=0.3.1.0, Culture=neutral, PublicKeyToken=64e28338c9f5eedb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSspi.0.3.1\lib\net40\NSspi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -488,6 +494,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.Amqp.Net40.config" />
   </ItemGroup>
   <ItemGroup />

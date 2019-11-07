@@ -51,9 +51,9 @@ namespace Amqp.Sasl
             Trace.WriteLine(TraceLevel.Frame, "On Command: {0}", command);
             if (command.Descriptor.Code == Codec.SaslChallenge.Code)
             {
-                SaslChallenge c = (SaslChallenge)command;
                 try
                 {
+                    SaslChallenge c = (SaslChallenge)command;
                     clientStatus = client.Init(c.Challenge.Length == 0 ? null : c.Challenge, out clientToken);
                 }
                 catch
